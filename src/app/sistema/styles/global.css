@@ -1,0 +1,5 @@
+body {
+  min-height: 100dvh;
+  max-width: 100dvw;
+  overflow-x: hidden;
+}
