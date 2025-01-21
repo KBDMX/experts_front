@@ -1,23 +1,36 @@
 'use client';
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { getMe, login, logout } from '@/api/usuarios/auth.api';
+import { getMe, logout, initiate2FA, verify2FA } from '@/api/usuarios/auth.api';
 import { dispatchMenssage } from '@/app/utils/menssageDispatcher';
 
 interface User {
   id: string;
-  rol: string; // El rol dinámico del usuario
-  // Otros campos según la respuesta del backend
+  rol: string;
+}
+
+interface TwoFactorResponse {
+  tempToken: string;
+  expiresAt: Date;
+}
+
+interface VerifyTwoFactorResponse {
+  ok: boolean;
+  isValid: boolean;
+  shouldRetry: boolean;
+  remainingAttempts: number;
+  message: string;
 }
 
 interface AuthContextProps {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
-  rol: string | null; // Almacena el rol actual
+  rol: string | null;
   setRol: (rol: string | null) => void;
   user: User | null;
   setUser: (user: User | null) => void;
   checkToken: () => Promise<boolean>;
-  handleLogin: (username: string, password: string, recordar: boolean) => Promise<boolean>;
+  handleLogin: (username: string, password: string, recordar: boolean) => Promise<TwoFactorResponse | null>;
+  handleVerify2FA: (code: string, tempToken: string, recordar: boolean) => Promise<VerifyTwoFactorResponse>;
   handleLogout: () => Promise<void>;
   isChecking: boolean;
 }
@@ -38,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.ok && response.user) {
         setUser(response.user);
         setIsLoggedIn(true);
-        setRol(response.user.rol); // Actualiza el rol dinámico
+        setRol(response.user.rol);
         return true;
       } else {
         setUser(null);
@@ -57,23 +70,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const handleLogin = async (username: string, password: string, recordar: boolean): Promise<boolean> => {
+  const handleLogin = async (
+    username: string, 
+    password: string, 
+    recordar: boolean
+  ): Promise<TwoFactorResponse | null> => {
     try {
-      const response = await login(username, password, recordar);
+      const response = await initiate2FA(username, password, recordar);
       if (response.ok) {
-        const isValid = await checkToken(); // Verifica el token después del login
-        if (isValid && user) {
-          dispatchMenssage('info', `Has ingresado con rol: ${user.rol}`);
-        }
-        return true;
+        return {
+          tempToken: response.tempToken,
+          expiresAt: new Date(response.expiresAt)
+        };
       } else {
         dispatchMenssage('fail', 'Credenciales inválidas');
-        return false;
+        return null;
       }
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
       dispatchMenssage('fail', 'Error al iniciar sesión');
-      return false;
+      return null;
+    }
+  };
+
+  const handleVerify2FA = async (
+    code: string,
+    tempToken: string,
+    recordar: boolean
+  ): Promise<VerifyTwoFactorResponse> => {
+    try {
+      const response = await verify2FA(code, tempToken, recordar);
+      
+      if (response.ok) {
+        await checkToken(); // Verifica y actualiza el estado con la información del usuario
+        if (user) {
+          dispatchMenssage('info', `Has ingresado con rol: ${user.rol}`);
+        }
+      }
+
+      return response;
+    } catch (error: any) {
+      console.error('Error en la verificación 2FA:', error);
+      return {
+        ok: false,
+        isValid: false,
+        shouldRetry: true,
+        remainingAttempts: 0,
+        message: 'Error en la verificación'
+      };
     }
   };
 
@@ -86,13 +130,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
       setIsLoggedIn(false);
       setRol(null);
-      dispatchMenssage('fail', 'Se ha cerrado la sesión');
+      dispatchMenssage('info', 'Se ha cerrado la sesión');
     }
   };
 
   useEffect(() => {
     checkToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -106,6 +149,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser,
         checkToken,
         handleLogin,
+        handleVerify2FA,
         handleLogout,
         isChecking,
       }}
