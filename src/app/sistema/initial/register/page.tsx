@@ -14,16 +14,44 @@ export default function Register() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (password !== confirmPassword) {
-            dispatchMenssage('fail', 'Las contraseñas no coinciden');
+            dispatchMenssage('info', 'Las contraseñas no coinciden');
             return;
         }
+
+        // Validaciones de contraseña
+        if (password.length < 6) {
+            dispatchMenssage('info', 'La contraseña debe tener al menos 6 caracteres');
+            return;
+        }
+
+        if (!/[A-Z]/.test(password)) {
+            dispatchMenssage('info', 'La contraseña debe contener al menos una letra mayúscula');
+            return;
+        }
+
+        if (!/[a-z]/.test(password)) {
+            dispatchMenssage('info', 'La contraseña debe contener al menos una letra minúscula');
+            return;
+        }
+
+        if (!/[0-9]/.test(password)) {
+            dispatchMenssage('info', 'La contraseña debe contener al menos un número');
+            return;
+        }
+
+        if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+            dispatchMenssage('info', 'La contraseña debe contener al menos un carácter especial');
+            return;
+        }
+
         const res = await register(usuario, email, password);
         if (res.ok) {
             dispatchMenssage('success', 'Usuario registrado correctamente');
             router.push('/sistema/initial/login');
         } else {
-            dispatchMenssage('fail', res.msg || 'Error desconocido');
+            dispatchMenssage('info', res.msg || 'Error desconocido');
         }
     }
 
@@ -87,6 +115,11 @@ export default function Register() {
                                     className="input input-bordered"
                                     required
                                 />
+                                <label className="label">
+                                    <span className="label-text-alt text-xs">
+                                        La contraseña debe contener al menos 6 caracteres, una mayúscula, una minúscula, un número y un carácter especial
+                                    </span>
+                                </label>
                             </div>
                             <div className="form-control">
                                 <label className="label">

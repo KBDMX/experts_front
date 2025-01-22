@@ -9,7 +9,7 @@ import React from 'react';
 
 
 export default function Page() {
-  const { isLoggedIn, setIsLoggedIn, isAdministrator } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
