@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { FaUser, FaLock, FaSignInAlt, FaUserPlus, FaEnvelope, FaKey } from 'react-icons/fa';
 
 export default function Login() {
-    const { handleLogin, handleVerify2FA, isLoggedIn } = useAuth();
+    const { handleLogin, handleVerify2FA, isLoggedIn, rol } = useAuth();
     const router = useRouter();
 
     // Estados para el formulario
@@ -31,7 +31,7 @@ export default function Login() {
         setIsSubmitting(true);
         try {
             const response = await handleLogin(usuario, password, recordar);
-            
+
             if (response) {
                 setTempToken(response.tempToken);
                 setExpiresAt(response.expiresAt);
@@ -58,7 +58,7 @@ export default function Login() {
             } else {
                 setRemainingAttempts(response.remainingAttempts);
                 dispatchMenssage('error', response.message);
-                
+
                 if (!response.shouldRetry) {
                     setShowTwoFactor(false);
                     setTwoFactorCode('');
@@ -81,8 +81,17 @@ export default function Login() {
     }
 
     if (isLoggedIn) {
-        router.push('/sistema/dashboard');
-        return null;
+        
+        switch (rol) {
+            case 'admin':
+                router.push('/sistema/admin/dashboard');
+                break;
+            case 'finca':
+                router.push('/sistema/finca');
+                break;
+            default:
+                return null;
+        }
     }
 
     return (

@@ -5,11 +5,20 @@ import Stats from "./stats";
 import Image from "next/image";
 import React from "react";
 export default function Hero() {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, rol } = useAuth();
     const router = useRouter();
     const handleIngresar = () => {
         if (isLoggedIn) {
-            router.push('sistema/dashboard');
+            switch (rol) {
+                case 'admin':
+                    router.push('/sistema/admin/dashboard');
+                    break;
+                case 'finca':
+                    router.push('/sistema/finca');
+                    break;
+                default:
+                    return null;
+            }
         } else {
             router.push('sistema/initial/login');
         }

@@ -23,7 +23,7 @@ export default function NavBar() {
     return (
         <>
             <div className='text-primary'>{"logged " + isLoggedIn}</div>
-            <div className='text-primary'>{"admin " + rol}</div>
+            <div className='text-primary'>{"rol " + rol}</div>
             <div className="bg-base-100">
                 <div className="navbar max-w-screen-lg mx-auto ">
                     <div className="navbar-start">
@@ -65,6 +65,7 @@ export default function NavBar() {
                                 <div className="dropdown dropdown-end">
                                     <div className="indicator">
                                         {rol === 'admin' && <span className="indicator-item indicator-center indicator-bottom badge badge-sm font-semibold badge-secondary">Admin</span>}
+                                        {rol === 'finca' && <span className="indicator-item indicator-center indicator-bottom badge badge-sm font-semibold badge-primary">Finca</span>}
                                         <div className="grid place-items-center">
                                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                                 <div className="w-10 rounded-full">
