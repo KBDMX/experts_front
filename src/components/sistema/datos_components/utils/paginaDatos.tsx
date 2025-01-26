@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useAuth } from "@/providers/authProvider";
 import { useRouter } from "next/navigation";
-import { dispatchMenssage } from "@/app/utils/menssageDispatcher";
+import { dispatchMenssage } from "@/utils/menssageDispatcher";
 
 import MantenimientoRoute from "./mantenimientoRoute";
 import Formulario from "../../formulario";

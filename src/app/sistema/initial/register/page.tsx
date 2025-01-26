@@ -1,7 +1,7 @@
 'use client';
 import { register } from "@/api/usuarios/auth.api";
 import { useState } from "react";
-import { dispatchMenssage } from "@/app/utils/menssageDispatcher";
+import { dispatchMenssage } from "@/utils/menssageDispatcher";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/authProvider";
 

@@ -1,7 +1,7 @@
 'use client';
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { getMe, logout, initiate2FA, verify2FA } from '@/api/usuarios/auth.api';
-import { dispatchMenssage } from '@/app/utils/menssageDispatcher';
+import { dispatchMenssage } from '@/utils/menssageDispatcher';
 
 interface User {
   id: string;
