@@ -1,6 +1,6 @@
 'use client';
 
-import PaginaGenerica from "@/app/sistema/components/datos_components/PaginaGenerica";
+import PaginaGenerica from "@/components/sistema/datos_components/PaginaGenerica";
 import { getUsuarios, putUsuario, deleteUsuario, postUsuario } from "@/api/usuarios/gestion_usuarios/usuarios.api";
 
 export default function UsuariosPage() {
@@ -19,6 +19,7 @@ export default function UsuariosPage() {
             updateData={async (userData) => {
                 // Extraer el valor del rol del objeto
                 const rolValue = userData.rol?.value || userData.rol;
+                console.log(userData);
                 return await putUsuario({
                     id_usuario: userData.id_usuario,
                     rol: rolValue

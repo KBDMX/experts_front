@@ -1,9 +1,9 @@
 'use client';
 import { useState } from "react";
 import { FaTasks, FaClipboardList, FaBolt } from "react-icons/fa";
-import Asignacion from "@/app/sistema/components/centro_guias_components/Asignacion";
-import GestionCoordinaciones from "@/app/sistema/components/centro_guias_components/GestionCoordinaciones";
-import CoordinacionesRapidas from "@/app/sistema/components/centro_guias_components/CoordinacionesRapidas";
+import Asignacion from "@/components/sistema/centro_guias_components/Asignacion";
+import GestionCoordinaciones from "@/components/sistema/centro_guias_components/GestionCoordinaciones";
+import CoordinacionesRapidas from "@/components/sistema/centro_guias_components/CoordinacionesRapidas";
 
 export default function Coordinaciones() {
   const [activeTab, setActiveTab] = useState<"asignacion" | "gestion" | "rapidas">("asignacion");

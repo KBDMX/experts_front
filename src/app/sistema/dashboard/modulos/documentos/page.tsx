@@ -1,10 +1,10 @@
 'use client';
-import BotonesMenu from "@/app/sistema/components/BotonesMenu";
-import ReturnButton from "@/app/sistema/components/returnButton";
+import BotonesMenu from "@/components/sistema/BotonesMenu";
+
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FiLink } from 'react-icons/fi';
-import DocumentosRoute from "@/app/sistema/components/documentos_components/DocumentosRoute";
+import DocumentosRoute from "@/components/sistema/documentos_components/ChildDocumentosRoute";
 import { FaNetworkWired } from "react-icons/fa";
 
 export default function MantenimientoInit() {
@@ -36,7 +36,7 @@ export default function MantenimientoInit() {
 
                 <BotonesMenu
                     titulo="Centro de Coordinación de Guías"
-                    icono={<FaNetworkWired/>}
+                    icono={<FaNetworkWired />}
                     onClick={() => router.push('/sistema/dashboard/modulos/documentos/centro_guias')}
                 />
             </div>

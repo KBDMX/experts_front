@@ -3,7 +3,8 @@ import { register } from "@/api/usuarios/auth.api";
 import { useState } from "react";
 import { dispatchMenssage } from "@/app/utils/menssageDispatcher";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../providers/authProvider";
+import { useAuth } from "@/providers/authProvider";
+
 export default function Register() {
     const [usuario, setUsuario] = useState('');
     const [email, setEmail] = useState('');

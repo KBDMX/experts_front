@@ -1,6 +1,6 @@
 'use client';
-import BotonesMenu from "@/app/sistema/components/BotonesMenu";
-import ReturnButton from "@/app/sistema/components/returnButton";
+import BotonesMenu from "@/components/sistema/BotonesMenu";
+
 import { useRouter } from "next/navigation";
 import React from "react";
 
