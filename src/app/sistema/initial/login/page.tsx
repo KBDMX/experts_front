@@ -81,10 +81,10 @@ export default function Login() {
     }
 
     if (isLoggedIn) {
-        
+
         switch (rol) {
             case 'admin':
-                router.push('/sistema/admin/dashboard');
+                router.push('/sistema/dashboard');
                 break;
             case 'finca':
                 router.push('/sistema/finca');
