@@ -22,8 +22,7 @@ export default function NavBar() {
 
     return (
         <>
-            <div className='text-primary'>{"logged " + isLoggedIn}</div>
-            <div className='text-primary'>{"rol " + rol}</div>
+
             <div className="bg-base-100">
                 <div className="navbar max-w-screen-lg mx-auto ">
                     <div className="navbar-start">
